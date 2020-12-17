@@ -12,6 +12,9 @@ SOURCES += \
     ../libonvif/cencode.c \
     ../libonvif/onvif.c \
     ../libonvif/sha1.c \
+    ../source/cencode.c \
+    ../source/onvif.c \
+    ../source/sha1.c \
     main.cpp \
     mainwindow.cpp
 
@@ -19,6 +22,9 @@ HEADERS += \
     ../libonvif/cencode.h \
     ../libonvif/onvif.h \
     ../libonvif/sha1.h \
+    ../source/cencode.h \
+    ../source/onvif.h \
+    ../source/sha1.h \
     mainwindow.h
 
 FORMS += \
@@ -29,9 +35,11 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-unix {
-    message("build linux")
-    INCLUDEPATH += ../libonvif
+# Linux with static libxml2, i.e. Ubuntu
+# install libxml2 and libxml2-devel with apt
+#unix {
+#    message("build linux static libxml2")
+#    INCLUDEPATH += ../libonvif
 
 
     #INCLUDEPATH += /usr/lib/x86_64-linux-gnu
@@ -39,10 +47,20 @@ unix {
 
     #unix:!macx: LIBS += -L/usr/lib/x86_64-linux-gnu/ -lxml2
 
-    INCLUDEPATH += /usr/include/libxml2
+#    INCLUDEPATH += /usr/include/libxml2
     #DEPENDPATH += /usr/include/libxml2
 
     #unix:!macx: PRE_TARGETDEPS += /usr/lib/x86_64-linux-gnu/libxml2.a
+#}
+
+# Linux with static libxml2, i.e. Ubuntu
+# install libxml2 and libxml2-devel with apt
+unix {
+    message("build linux shared libxml2")
+    unix:!macx: LIBS += -L/usr/lib64/ -lxml2
+
+    INCLUDEPATH += /usr/lib64
+    DEPENDPATH += /usr/lib64
 }
 
 win32-g++ {
