@@ -1,0 +1,19 @@
+To build libxml2 in Windows for use with mingw:
+
+Enter the desired folder (i.e. libxml2/win64-debug) and type
+
+cscript configure.js iconv=no compiler=mingw
+mingw32-make.exe -f Makefile.mingw
+
+Repeat for other builds
+
+=======================
+To build libxml2 in Windows for use with VS:
+
+Enter the desired folder (i.e. libxml2/win64-debug) and type
+
+cscript configure.js iconv=no cruntime=/MDd
+nmake /f Makefile.msvc
+
+=======================
+libonvif code is included as source in the examples rather than compiled as a lib.
