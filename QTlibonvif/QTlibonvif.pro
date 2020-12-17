@@ -9,9 +9,6 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    ../libonvif/cencode.c \
-    ../libonvif/onvif.c \
-    ../libonvif/sha1.c \
     ../source/cencode.c \
     ../source/onvif.c \
     ../source/sha1.c \
@@ -19,9 +16,6 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
-    ../libonvif/cencode.h \
-    ../libonvif/onvif.h \
-    ../libonvif/sha1.h \
     ../source/cencode.h \
     ../source/onvif.h \
     ../source/sha1.h \
@@ -59,6 +53,8 @@ unix {
     message("build linux shared libxml2")
     unix:!macx: LIBS += -L/usr/lib64/ -lxml2
 
+    INCLUDEPATH += ../source
+    INCLUDEPATH += /usr/include/libxml2
     INCLUDEPATH += /usr/lib64
     DEPENDPATH += /usr/lib64
 }

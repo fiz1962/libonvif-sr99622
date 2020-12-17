@@ -60,6 +60,8 @@ void MainWindow::on_pushButton_2_clicked()
       prepareOnvifData(i, onvif_session, onvif_data);
 
       ui->textEdit->append(onvif_data->camera_name);
+      ui->textEdit->append( onvif_data->xaddrs );
+      ui->textEdit->append( onvif_data->device_service );
       /*fprintf(stdout, "enter username:");
       fgets(onvif_data->username, 128, stdin);
       fprintf(stdout, "enter password:");
