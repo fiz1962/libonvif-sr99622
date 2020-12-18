@@ -21,13 +21,17 @@ void MainWindow::on_pushButton_clicked()
     struct OnvifData *onvif_data = (struct OnvifData*)malloc(sizeof(struct OnvifData));
     initializeSession(onvif_session);
 
+    QString onvifHost = ui->Host->currentText();
+    QString user = ui->UserName->text();
+    QString pass = ui->Password->text();
+
     clearData(onvif_data);
     strncpy(onvif_data->camera_name, "UNKNOWN CAMERA", strlen(onvif_data->camera_name));
     strcpy(onvif_data->device_service, "POST /onvif/device_service HTTP/1.1");
-    strcpy(onvif_data->xaddrs, "http://192.168.1.100:80/onvif/device_service");
+    strcpy(onvif_data->xaddrs, onvifHost.toStdString().c_str());
 
-    strcpy(onvif_data->username, "user");
-    strcpy(onvif_data->password, "passwd");
+    strcpy(onvif_data->username, user.toStdString().c_str());
+    strcpy(onvif_data->password, pass.toStdString().c_str());
 
     extractOnvifService(onvif_data->device_service, true);
     getTimeOffset(onvif_data);
@@ -37,11 +41,10 @@ qDebug() << "Time offset " << onvif_data->time_offset;
 
     onvif_data->time_offset = 0;
 
-    fillRTSP(onvif_data);
-ui->textEdit->append( onvif_data->stream_uri );
-ui->textEdit->append( onvif_data->xaddrs );
-ui->textEdit->append( onvif_data->device_service );
-
+    int n = 0;
+    while( fillRTSP(onvif_data, n++) == 0 ) {
+        ui->textEdit->append( onvif_data->stream_uri );
+    }
 
     closeSession(onvif_session);
     free(onvif_session);
@@ -62,6 +65,8 @@ void MainWindow::on_pushButton_2_clicked()
       ui->textEdit->append(onvif_data->camera_name);
       ui->textEdit->append( onvif_data->xaddrs );
       ui->textEdit->append( onvif_data->device_service );
+      ui->Host->addItem(onvif_data->xaddrs);
+
       /*fprintf(stdout, "enter username:");
       fgets(onvif_data->username, 128, stdin);
       fprintf(stdout, "enter password:");
