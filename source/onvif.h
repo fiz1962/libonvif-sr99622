@@ -123,7 +123,7 @@ LIBRARY_API void initializeSession(struct OnvifSession *onvif_session);
 LIBRARY_API void closeSession(struct OnvifSession *onvif_session);
 LIBRARY_API int broadcast(struct OnvifSession *onvif_session);
 LIBRARY_API void prepareOnvifData(int ordinal, struct OnvifSession *onvif_session, struct OnvifData *onvif_data);
-LIBRARY_API int fillRTSP(struct OnvifData *onvif_data);
+LIBRARY_API int fillRTSP(struct OnvifData *onvif_data, int profileIndex);
 LIBRARY_API void clearData(struct OnvifData *onvif_data);
 
 LIBRARY_API int getCapabilities(struct OnvifData *onvif_data);
@@ -152,7 +152,7 @@ LIBRARY_API int gotoPreset(char * arg, struct OnvifData *onvif_data);
 LIBRARY_API int setUser(char * new_password, struct OnvifData *onvif_data);
 LIBRARY_API int setSystemDateAndTime(struct OnvifData *onvif_data);
 LIBRARY_API int getTimeOffset(struct OnvifData *onvif_data);
-LIBRARY_API int getFirstProfileToken(struct OnvifData *onvif_data);
+LIBRARY_API int getProfileToken(struct OnvifData *onvif_data, int profileIndex);
 LIBRARY_API int getStreamUri(struct OnvifData *onvif_data);
 LIBRARY_API int getDeviceInformation(struct OnvifData *onvif_data);
 LIBRARY_API int rebootCamera(struct OnvifData *onvif_data);
@@ -182,7 +182,7 @@ LIBRARY_API void extractOnvifService(char service[1024], bool post);
 LIBRARY_API void extractHost(char * xaddrs, char host[128]);
 LIBRARY_API int checkForXmlErrorMsg(xmlDocPtr doc, char error_msg[1024]);
 LIBRARY_API int getXmlValue(xmlDocPtr doc, xmlChar *xpath, char buf[], int buf_length);
-LIBRARY_API int getNodeAttribute (xmlDocPtr doc, xmlChar *xpath, xmlChar *attribute, char buf[], int buf_length);
+LIBRARY_API int getNodeAttribute (xmlDocPtr doc, xmlChar *xpath, xmlChar *attribute, char buf[], int buf_length, int index);
 LIBRARY_API xmlXPathObjectPtr getNodeSet (xmlDocPtr doc, xmlChar *xpath);
 
 LIBRARY_API int setSocketOptions(int socket);

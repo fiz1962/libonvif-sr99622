@@ -1027,8 +1027,10 @@ int setSystemDateAndTime(struct OnvifData *onvif_data) {
     return result;
 }
 
-int getFirstProfileToken(struct OnvifData *onvif_data) {
+int getProfileToken(struct OnvifData *onvif_data, int profileIndex) {
     int result;
+    onvif_data->profileToken[0] = 0;
+
     xmlDocPtr doc = xmlNewDoc(BAD_CAST "1.0");
     xmlNodePtr root = xmlNewDocNode(doc, NULL, BAD_CAST "Envelope", NULL);
     xmlDocSetRootElement(doc, root);
@@ -1042,7 +1044,7 @@ int getFirstProfileToken(struct OnvifData *onvif_data) {
     addHttpHeader(doc, root, onvif_data->xaddrs, onvif_data->media_service, cmd, 4096);
     xmlDocPtr reply = sendCommandToCamera(cmd, onvif_data->xaddrs);
     if (reply != NULL) {
-        getNodeAttribute(reply, BAD_CAST "//s:Body//trt:GetProfilesResponse//trt:Profiles", "token", onvif_data->profileToken, 128);
+        getNodeAttribute(reply, BAD_CAST "//s:Body//trt:GetProfilesResponse//trt:Profiles", "token", onvif_data->profileToken, 128, profileIndex);
         result = checkForXmlErrorMsg(reply, onvif_data->last_error);
         xmlFreeDoc(reply);
     }
@@ -1434,7 +1436,7 @@ int getXmlValue(xmlDocPtr doc, xmlChar *xpath, char buf[], int buf_length) {
     return 0;
 }
 
-int getNodeAttribute (xmlDocPtr doc, xmlChar *xpath, xmlChar *attribute, char buf[], int buf_length) {
+int getNodeAttribute (xmlDocPtr doc, xmlChar *xpath, xmlChar *attribute, char buf[], int buf_length, int profileIndex) {
     xmlChar *keyword = NULL;
     xmlXPathContextPtr context = xmlXPathNewContext(doc);
     if (context == NULL) {
@@ -1461,7 +1463,10 @@ int getNodeAttribute (xmlDocPtr doc, xmlChar *xpath, xmlChar *attribute, char bu
     }
 
     if (result) {
-        keyword = xmlGetProp(result->nodesetval->nodeTab[0], attribute);
+        if( profileIndex >= result->nodesetval->nodeNr )
+            return -5;
+
+        keyword = xmlGetProp(result->nodesetval->nodeTab[profileIndex], attribute);
         if (keyword != NULL) {
             if (strlen((char*) keyword) > buf_length-1) {
                 xmlXPathFreeObject(result);
@@ -2402,11 +2407,11 @@ void prepareOnvifData(int ordinal, struct OnvifSession *onvif_session, struct On
     getTimeOffset(onvif_data);
 }
 
-int fillRTSP(struct OnvifData *onvif_data) {
+int fillRTSP(struct OnvifData *onvif_data, int profileIndex) {
   int result = 0;
   result = getCapabilities(onvif_data);
     if (result == 0) {
-        result = getFirstProfileToken(onvif_data);
+        result = getProfileToken(onvif_data, profileIndex);
         if (result == 0) {
             result = getStreamUri(onvif_data);
         }
