@@ -64,7 +64,7 @@ win32-g++ {
     INCLUDEPATH += $$PWD/../libxml2/win64-debug/bin.mingw
     DEPENDPATH += $$PWD/../libxml2/win64-debug/bin.mingw
 
-    INCLUDEPATH += ..\libonvif
+    INCLUDEPATH += ..\source
     INCLUDEPATH += ..\libxml2\include\
 
     INCLUDEPATH += C:/Qt/mingw-w64/mingw64/x86_64-w64-mingw32/include
@@ -83,7 +83,7 @@ win32-g++ {
 
 win32:!win32-g++ {
     message("Build !win32-g++")
-    INCLUDEPATH += ..\libonvif
+    INCLUDEPATH += ..\source
     INCLUDEPATH += ..\libxml2\include\
     INCLUDEPATH += ..\libonvif\libxml2\os400\iconv
 
