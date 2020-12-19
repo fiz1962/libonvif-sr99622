@@ -1,3 +1,5 @@
+Forked from https://sourceforge.net/projects/libonvif/ and https://github.com/sr99622/libonvif
+
 LIBONVIF
 
 A client side implementation of the ONVIF specification.
@@ -18,17 +20,8 @@ A client side implementation of the ONVIF specification.
 *
 *******************************************************************************/
 
-                             INTRODUCTION
+This variation of libonvif uses the onvif code as source code in a Qt6 project.  If you are looking for a library version, see the original links this was derived from.
 
-libonvif is a multi platform library implementing the client side of the ONVIF
-specification for communicating with IP enabled compatible cameras.  It will
-compile with GNU cc on Linux, macosx, and mingw.  A separate version is made for
-Windows and is available in a zip download format, see libonvif on sourceforge
-for more information.
-
-An example program is included with libonvif that will discover compatible
-cameras on the local network and query each of them for their RSTP connection
-uri information.
 
                          DEPENDENCY ON LIBXML2
 
@@ -38,3 +31,4 @@ include files for compilation.  Most systems come with libxml2 pre-
 installed.  You can check the availability of libxml2 on your system with the
 following command:
 
+A file, "How to compile libxml2.txt" is included which shows how to compile this lib for use in Windows with both Visual Studio and mingw.  Alternatively you could use precompiled libs avaliable elsewhere.
